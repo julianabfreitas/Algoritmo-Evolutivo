@@ -1,32 +1,36 @@
+//arquivo rgb.cpp
+#include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 #include <math.h>
+#include <unistd.h>
+#include <GL/glut.h>
 
 #define NUM_POP 10
 
-//CRIANDO POPULA«√O
-int** pop(){ //CADA INDIVÕDUO … UMA LISTA DE NUMEROS E A A POPULA«√O … UMA LISTA DE INDIVÕDUOS
+//CRIANDO POPULA√á√ÉO
+int** pop(){ //CADA INDIV√çDUO √â UMA LISTA DE NUMEROS E A A POPULA√á√ÉO √â UMA LISTA DE INDIV√çDUOS
 
-    int** p; // p ser· nossa pop
-    p = (int**)malloc(NUM_POP*sizeof(int*)); //alocando memÛria para nossa pop
+    int** p; // p ser√° nossa pop
+    p = (int**)malloc(NUM_POP*sizeof(int*)); //alocando mem√≥ria para nossa pop
     int i, j;
     for(i=0; i<NUM_POP; i++){
         p[i] = (int*)malloc(3*sizeof(int));
     }
 
-    for(i=0; i<NUM_POP; i++){ //gerando o genoma do indivÌduo (par‚metros rgb)
+    for(i=0; i<NUM_POP; i++){ //gerando o genoma do indiv√≠duo (par√¢metros rgb)
         for(j=0; j<3; j++){
-            p[i][j] = rand()%256; //os valores rgb v„o de 0 a 255
+            p[i][j] = rand()%256; //os valores rgb v√£o de 0 a 255
         }
     }
 
     return p;
 }
 
-//METODO DE AVALIZA«√O (fitness fuction)
+//METODO DE AVALIZA√á√ÉO (fitness fuction)
 int avaliacao(int* individuo){
-    int nota = 0; //a melhor nota È 510
+    int nota = 0; //a melhor nota √© 510
     int x; //maximiza 1
     int y; //maximiza 2
     int maior, menor, medio;
@@ -94,15 +98,15 @@ int avaliacao(int* individuo){
 //GERANDO PAIS
 int geradores(int** populacao){
 
-    //Escolhe aleatoriamente dois indivÌduos da populaÁ„o
+    //Escolhe aleatoriamente dois indiv√≠duos da popula√ß√£o
     int posicao1 = rand()%NUM_POP;
     int posicao2 = rand()%NUM_POP;
 
-    //Calcula a nota desses indivÌduos
+    //Calcula a nota desses indiv√≠duos
     int nota1 = avaliacao(populacao[posicao1]);
     int nota2 = avaliacao(populacao[posicao2]);
 
-    //Compara a nota desses indivÌduos e retorna o de maior nota
+    //Compara a nota desses indiv√≠duos e retorna o de maior nota
     if(nota1<nota2){
         return posicao1;
     }
@@ -113,12 +117,12 @@ int geradores(int** populacao){
 
 //MELHOR DE TODOS
 int* fica_melhor(int** populacao){
-    int* melhor_carinha = (int*)malloc(3*sizeof(int)); //aloca espaÁo pro indivÌduo de maior nota
-    int pos_melhor_nota = 0, i; //define que a primeira posiÁ„o sempre ser· do indivÌduo de maior nota
-    int melhor_nota = avaliacao(populacao[0]); //vari·vel que guarda a melhor nota para futuras comparaÁıes
+    int* melhor_carinha = (int*)malloc(3*sizeof(int)); //aloca espa√ßo pro indiv√≠duo de maior nota
+    int pos_melhor_nota = 0, i; //define que a primeira posi√ß√£o sempre ser√° do indiv√≠duo de maior nota
+    int melhor_nota = avaliacao(populacao[0]); //vari√°vel que guarda a melhor nota para futuras compara√ß√µes
                                                  //inicialmente igualamos a melhor nota ao primeiro individuo
 
-    //compara a nota de todos os indivÌduos da populaÁ„o e guarda o melhor
+    //compara a nota de todos os indiv√≠duos da popula√ß√£o e guarda o melhor
     for(i=1; i<NUM_POP; i++){
         if(avaliacao(populacao[i])<melhor_nota){
             melhor_nota = avaliacao(populacao[i]);
@@ -126,7 +130,7 @@ int* fica_melhor(int** populacao){
         }
     }
 
-    //atribuindo os par‚metros ao melhor carinha
+    //atribuindo os par√¢metros ao melhor carinha
     melhor_carinha[0] = populacao[pos_melhor_nota][0];
     melhor_carinha[1] = populacao[pos_melhor_nota][1];
     melhor_carinha[2] = populacao[pos_melhor_nota][2];
@@ -137,11 +141,11 @@ int* fica_melhor(int** populacao){
 //CRIA NOVO INDIVIDUO
 int* ind(int** populacao){
 
-    //chama a funÁ„o geradores para conseguir os melhores m„e e pai
+    //chama a fun√ß√£o geradores para conseguir os melhores m√£e e pai
     int *mae = populacao[geradores(populacao)];
     int *pai = populacao[geradores(populacao)];
 
-    int *novo_individuo = (int*)malloc(3*sizeof(int)); //aloca espaÁo para o novo indivÌdeuo
+    int *novo_individuo = (int*)malloc(3*sizeof(int)); //aloca espa√ßo para o novo indiv√≠deuo
 
     //cruzando pais
     novo_individuo[0] = (mae[0] + pai[0])/2;
@@ -153,8 +157,8 @@ int* ind(int** populacao){
 
 //MUTACAO
 void muta_ae(int** populacao, int contador){
-    int i, j, k; //vari·veis
-    int n = 3; //variaÁ„o
+    int i, j, k; //vari√°veis
+    int n = 3; //varia√ß√£o
     for(i = 1; i<NUM_POP; i++){ //adicionando ou tirando 3 unidades do rgb
         for(j = 0; j<3; j++){
             k = rand()%3;
@@ -176,10 +180,10 @@ void muta_ae(int** populacao, int contador){
 
 //CRIA NOVA POPULACAO
 int** nova_pop(int** populacao, int contador){
-    int** population = (int**)malloc(NUM_POP*sizeof(int*)); //alocando espaÁo pra populaÁ„o inteira
+    int** population = (int**)malloc(NUM_POP*sizeof(int*)); //alocando espa√ßo pra popula√ß√£o inteira
     int i;
-    population[0] = fica_melhor(populacao); //salvando o melhor na primeira posiÁ„o
-    for(i=1; i<NUM_POP; i++){ //colocando cada indivÌduo numa nova posiÁ„o
+    population[0] = fica_melhor(populacao); //salvando o melhor na primeira posi√ß√£o
+    for(i=1; i<NUM_POP; i++){ //colocando cada indiv√≠duo numa nova posi√ß√£o
         population[i] = ind(populacao);
     }
     muta_ae(population, contador); //mutando
@@ -199,36 +203,4 @@ void imprime(int** populacao){
     }
 
     printf("\n\n");
-}
-
-
-int main(){
-
-    srand(time(NULL)); //INICIALIZA AS COISAS - AJUDA OS VALORES A VARIAREM BASTANTE
-    int** populacao = pop();
-    imprime(populacao);
-
-    int contador = 0;
-    int i;
-
-    while(contador!=400){
-        int** populacao_nova = nova_pop(populacao, contador);
-        imprime(populacao_nova);
-
-        for(i=0; i<NUM_POP; i++){
-            free(populacao[i]);
-        }
-        free(populacao);
-
-        populacao = populacao_nova;
-
-        contador++;
-    }
-
-    for(i=0; i<NUM_POP; i++){
-        free(populacao[i]);
-    }
-    free(populacao);
-
-    return 0;
 }
