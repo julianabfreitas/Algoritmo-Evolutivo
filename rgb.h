@@ -5,16 +5,7 @@
 
 	#define LOOP_SIZE 100       //Quantidade de repetições
 
-	typedef struct pixel PIXEL; //Struct que guarda cada pixel
-	struct pixel{
-	    int x;
-	    int y;
-	    int r;
-	    int g;
-	    int b;
-	};
-
-	int** pop(); //Cria a população inicial com números aleatórios de RGB
+	int** comeca_pop(); //Cria a população inicial com números aleatórios de RGB
 
 	int avaliacao(int* individuo); //Fitness function
 
@@ -24,9 +15,9 @@
 
 	int* ind(int** populacao); //Cria um novo indivíduo cruzando mãe e pai
 
-	void muta_ae(int** populacao, int contador); //Mutação
+	void muta_ae(int** populacao); //Mutação
 
-	int** nova_pop(int** populacao, int contador); //Cria nova população
+	int** nova_pop(int** populacao); //Cria nova população
 
 	void imprime(int** populacao); //Imprime na tela a população em questão
 

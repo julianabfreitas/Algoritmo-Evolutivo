@@ -11,36 +11,41 @@ using namespace std;
 
 static int win(0); //Função da OpenGL
 
-#define NUM_POP 10
+#define NUM_POP 100
 
-int x_inicial= 100;
-int x = 0;
-int y = 500;
-int n = 6;
-int i = 0;
+int x_inicial = 90; //coordenada de x
+int x = 0; //auxiliar pra ajudar na coordenada x
+int y = 45; //coordenada de y
+int i = 0; //auxiliar
+int a = 0; //auxiliar pra percorrer o vetor 
 
-void print_cenario(){
-    if(n==0){
+
+void imprime_pop(int **populacao){ //printa um cenário em pirâmide começando de baixo pra cima
+    if(a==99){ //quando acabarem as linhas não há o que printar mais
+        y = 45;  
+        i = 0; 
+        a = 0; 
         return;
     }
-    x = x_inicial;
-    while(i != n){
-        glBegin(GL_POINTS);
-            glColor3f(1,0,0);
+    x = x_inicial; //iguala o auxiliar ao x_inicial correspondente a cada linha
+    while(i != 9){ //enquando o i for diferente ao numero de elementos daquela linha
+        glBegin(GL_POINTS); //printa os pontos
+            glColor3ub(populacao[a][0],populacao[a][1], populacao[a][2]);
             glVertex2i(x, y);
         glEnd();
-        x +=80;
-        i++;
+        x += 50; //altera o valor de x
+        i++; //cresce i
+        a++;
     }
-    n--;
-    y -= 80;
-    x_inicial += 40;
-    i = 0;
-    print_cenario();
+    y += 50; //decresce a posição em y
+    i = 0; //zera i
+    imprime_pop(populacao);
 }
 
 int main(int argc, char* argv[]){
     
+    int j;
+
     time_t t; srand((unsigned) time(&t)); //Renova a semente da função rand() para evitar repetição dos números sorteados
 
     //Funções e procedimentos da OpenGL
@@ -53,42 +58,33 @@ int main(int argc, char* argv[]){
     glLoadIdentity();
     glClear(GL_COLOR_BUFFER_BIT);
     gluOrtho2D(0.0, (float) LN_SCREEN, (float) H_SCREEN, 0.0);
-    glPointSize(30);
+    glPointSize(20);
 
-    print_cenario();
+    int** populacao = comeca_pop(); //cria a população
+
+    imprime_pop(populacao);
 
     glFlush();
-    
-    glutMainLoop();
-}
-/*
-int main(){
 
-    srand(time(NULL)); //INICIALIZA AS COISAS - AJUDA OS VALORES A VARIAREM BASTANTE
-    int** populacao = pop();
-    imprime(populacao);
-
-    int contador = 0;
-    int i;
-
-    while(contador!=400){
-        int** populacao_nova = nova_pop(populacao, contador);
-        imprime(populacao_nova);
-
-        for(i=0; i<NUM_POP; i++){
-            free(populacao[i]);
+    for(int loop=0; loop<LOOP_SIZE; loop++){
+        int** populacao_nova = nova_pop(populacao);
+        usleep(500000); //1seg
+        imprime_pop(populacao_nova);
+        glFlush();
+        for(j=0; j<NUM_POP; j++){
+            free(populacao[j]);
         }
         free(populacao);
 
         populacao = populacao_nova;
 
-        contador++;
     }
 
-    for(i=0; i<NUM_POP; i++){
-        free(populacao[i]);
+    for(j=0; j<NUM_POP; j++){
+        free(populacao[j]);
     }
     free(populacao);
 
-    return 0;
-}*/
+    
+    glutMainLoop();
+}

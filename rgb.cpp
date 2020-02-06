@@ -1,5 +1,4 @@
 //arquivo rgb.cpp
-#include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -7,10 +6,10 @@
 #include <unistd.h>
 #include <GL/glut.h>
 
-#define NUM_POP 10
+#define NUM_POP 100
 
 //CRIANDO POPULAÇÃO
-int** pop(){ //CADA INDIVÍDUO É UMA LISTA DE NUMEROS E A A POPULAÇÃO É UMA LISTA DE INDIVÍDUOS
+int** comeca_pop(){ //CADA INDIVÍDUO É UMA LISTA DE NUMEROS E A A POPULAÇÃO É UMA LISTA DE INDIVÍDUOS
 
     int** p; // p será nossa pop
     p = (int**)malloc(NUM_POP*sizeof(int*)); //alocando memória para nossa pop
@@ -156,7 +155,7 @@ int* ind(int** populacao){
 }
 
 //MUTACAO
-void muta_ae(int** populacao, int contador){
+void muta_ae(int** populacao){
     int i, j, k; //variáveis
     int n = 3; //variação
     for(i = 1; i<NUM_POP; i++){ //adicionando ou tirando 3 unidades do rgb
@@ -179,14 +178,14 @@ void muta_ae(int** populacao, int contador){
 }
 
 //CRIA NOVA POPULACAO
-int** nova_pop(int** populacao, int contador){
+int** nova_pop(int** populacao){
     int** population = (int**)malloc(NUM_POP*sizeof(int*)); //alocando espaço pra população inteira
     int i;
     population[0] = fica_melhor(populacao); //salvando o melhor na primeira posição
     for(i=1; i<NUM_POP; i++){ //colocando cada indivíduo numa nova posição
         population[i] = ind(populacao);
     }
-    muta_ae(population, contador); //mutando
+    muta_ae(population); //mutando
     return population;
 
 }
@@ -203,4 +202,4 @@ void imprime(int** populacao){
     }
 
     printf("\n\n");
-}
+} 
