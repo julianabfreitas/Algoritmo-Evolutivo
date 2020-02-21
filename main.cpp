@@ -1,4 +1,3 @@
-#include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -68,7 +67,7 @@ int main(int argc, char* argv[]){
 
     for(int loop=0; loop<LOOP_SIZE; loop++){
         int** populacao_nova = nova_pop(populacao);
-        usleep(500000); //1seg
+        usleep(500000); //1/2 seg
         imprime_pop(populacao_nova);
         glFlush();
         for(j=0; j<NUM_POP; j++){

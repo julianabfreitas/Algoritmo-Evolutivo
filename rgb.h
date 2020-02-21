@@ -22,6 +22,3 @@
 	void imprime(int** populacao); //Imprime na tela a população em questão
 
 #endif
-
-
-

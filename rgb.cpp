@@ -29,14 +29,15 @@ int** comeca_pop(){ //CADA INDIVÍDUO É UMA LISTA DE NUMEROS E A A POPULAÇÃO 
 
 //METODO DE AVALIZAÇÃO (fitness fuction)
 int avaliacao(int* individuo){
-    int nota = 0; //a melhor nota é 510
+    int nota = 0; 
     int x; //maximiza 1
     int y; //maximiza 2
     int maior, menor, medio;
 
+    //colocar em ordem de valor crescente dos parâmetros de rgb
     if(individuo[0]>individuo[1]){
         if(individuo[2]>individuo[0]){
-            maior = 2; //o elemento que vamos maximizar
+            maior = 2; 
             medio = 0;
             menor = 1;
         }else{
